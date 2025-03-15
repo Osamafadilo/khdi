@@ -1,6 +1,7 @@
 import React from "react";
 import CategoryCard from "./CategoryCard";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 interface Category {
   id: string;
@@ -76,6 +77,8 @@ const CategoryGrid = ({
   onCategorySelect = () => {},
   isRTL = false,
 }: CategoryGridProps) => {
+  const navigate = useNavigate();
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -96,6 +99,14 @@ const CategoryGrid = ({
         stiffness: 100,
       },
     },
+  };
+
+  const handleCategoryClick = (categoryId: string) => {
+    // Call the original onCategorySelect function for modal display
+    onCategorySelect(categoryId);
+
+    // Also navigate to the dedicated page
+    navigate(`/services/${categoryId}`);
   };
 
   return (
@@ -119,7 +130,7 @@ const CategoryGrid = ({
               title={category.title}
               description={category.description}
               imageSrc={category.imageSrc}
-              onClick={() => onCategorySelect(category.id)}
+              onClick={() => handleCategoryClick(category.id)}
             />
           </motion.div>
         ))}
